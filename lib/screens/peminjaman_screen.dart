@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class PeminjamanScreen extends StatefulWidget {
+  const PeminjamanScreen({Key? key}) : super(key: key);
   @override
   _PeminjamanScreenState createState() => _PeminjamanScreenState();
 }

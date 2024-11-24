@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import '../models/buku.dart';
+import '../services/buku_service.dart';
+import 'peminjaman_form_screen.dart';
+import 'tambah_buku_screen.dart';
 
 class BukuScreen extends StatefulWidget {
+  const BukuScreen({Key? key}) : super(key: key);
+
   @override
-  _BukuScreenState createState() => _BukuScreenState();
+  State<BukuScreen> createState() => _BukuScreenState();
 }
 
 class _BukuScreenState extends State<BukuScreen> {
-  List<Map<String, dynamic>> _bukuList = [];
-  bool _isLoading = true;
+  final BukuService _bukuService = BukuService();
+  List<Buku> bukuList = [];
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -16,61 +23,80 @@ class _BukuScreenState extends State<BukuScreen> {
   }
 
   Future<void> _loadBuku() async {
-    // Implementasi load data buku dari API
-    await Future.delayed(Duration(seconds: 2));
-    setState(() {
-      _bukuList = [
-        {
-          'id': '1',
-          'judul': 'Flutter Development',
-          'pengarang': 'John Doe',
-          'penerbit': 'Tech Books',
-          'tahun_terbit': 2023,
-        },
-        // Tambahkan data buku lainnya
-      ];
-      _isLoading = false;
-    });
+    try {
+      setState(() => isLoading = true);
+      final data = await _bukuService.getBuku();
+      setState(() {
+        bukuList = data;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Daftar Buku'),
-        backgroundColor: Colors.blue[900],
+        title: const Text('Daftar Buku'),
       ),
-      body: _isLoading
-          ? Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: _bukuList.length,
-              itemBuilder: (context, index) {
-                final buku = _bukuList[index];
-                return Card(
-                  margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: ListTile(
-                    title: Text(
-                      buku['judul'],
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Pengarang: ${buku['pengarang']}'),
-                        Text('Penerbit: ${buku['penerbit']}'),
-                        Text('Tahun: ${buku['tahun_terbit']}'),
-                      ],
-                    ),
-                    trailing: IconButton(
-                      icon: Icon(Icons.bookmark_border),
-                      onPressed: () {
-                        // Implementasi peminjaman buku
-                      },
-                    ),
-                  ),
-                );
-              },
-            ),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : bukuList.isEmpty
+              ? const Center(child: Text('Tidak ada buku'))
+              : ListView.builder(
+                  itemCount: bukuList.length,
+                  itemBuilder: (context, index) {
+                    final buku = bukuList[index];
+                    return Card(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
+                      child: ListTile(
+                        title: Text(buku.judul),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(buku.pengarang),
+                            Text(
+                                'Stok: ${buku.stok} | Kategori: ${buku.kategori}'),
+                          ],
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  PeminjamanFormScreen(buku: buku),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final result = await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const TambahBukuScreen()),
+          );
+          if (result == true) {
+            _loadBuku(); // Refresh data setelah menambah buku
+          }
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
