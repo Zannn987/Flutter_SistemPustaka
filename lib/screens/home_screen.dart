@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'buku_screen.dart';
 import 'anggota_screen.dart';
-import 'peminjaman_screen.dart';
+import 'peminjaman_list_screen.dart';
 import 'profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -17,7 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _screens = [
     const BukuScreen(),
     const AnggotaScreen(),
-    const PeminjamanScreen(),
+    const PeminjamanListScreen(),
     const ProfileScreen(),
     const SizedBox(),
   ];

@@ -19,12 +19,12 @@ class Buku {
 
   factory Buku.fromJson(Map<String, dynamic> json) {
     return Buku(
-      id: json['id'].toString(),
+      id: json['id']?.toString() ?? '',
       judul: json['judul'] ?? '',
       pengarang: json['pengarang'] ?? '',
       penerbit: json['penerbit'] ?? '',
-      tahun_terbit: json['tahun_terbit'].toString(),
-      stok: json['stok'].toString(),
+      tahun_terbit: json['tahun_terbit']?.toString() ?? '',
+      stok: json['stok']?.toString() ?? '',
       kategori: json['kategori'] ?? '',
     );
   }

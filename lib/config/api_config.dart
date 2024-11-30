@@ -1,6 +1,12 @@
 class ApiConfig {
-  // Base URL untuk API
-  static const String baseUrl = 'http://localhost/flutter_sistem_pustaka/api';
+  // Gunakan IP yang tepat untuk web
+  static const String baseUrl = "http://localhost/flutter_sistem_pustaka/api";
+
+  // Tambahkan header untuk request
+  static Map<String, String> headers = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+  };
 
   // Endpoint untuk auth
   static String get loginUrl => '$baseUrl/anggota/login.php';
@@ -20,6 +26,8 @@ class ApiConfig {
   static String get peminjamanUrl => '$baseUrl/peminjaman/list.php';
   static String get createPeminjamanUrl => '$baseUrl/peminjaman/create.php';
   static String get detailPeminjamanUrl => '$baseUrl/peminjaman/detail.php';
+  static String get kembalikanBukuUrl =>
+      '$baseUrl/peminjaman/kembalikan-buku.php';
 
   // Endpoint untuk pengembalian
   static String get pengembalianUrl => '$baseUrl/pengembalian/create.php';

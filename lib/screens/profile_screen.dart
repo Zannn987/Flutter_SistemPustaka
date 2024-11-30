@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../services/anggota_service.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -8,27 +9,34 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  Map<String, dynamic> _userData = {};
+  String _nim = '';
+  Map<String, dynamic> _profileData = {};
   bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _loadUserData();
+    _loadProfile();
   }
 
-  Future<void> _loadUserData() async {
-    // Implementasi load data user dari API
-    await Future.delayed(Duration(seconds: 2));
-    setState(() {
-      _userData = {
-        'nim': '123456789',
-        'nama': 'John Doe',
-        'alamat': 'Jl. Contoh No. 123',
-        'jenis_kelamin': 'L',
-      };
-      _isLoading = false;
-    });
+  Future<void> _loadProfile() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final nim = prefs.getString('nim') ?? '';
+      setState(() => _nim = nim);
+
+      // Load profile data using nim
+      final response = await AnggotaService().getProfile(nim);
+      setState(() {
+        _profileData = response['data'];
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() => _isLoading = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Gagal memuat profile: $e')),
+      );
+    }
   }
 
   @override
@@ -50,12 +58,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Icon(Icons.person, size: 50, color: Colors.white),
                   ),
                   SizedBox(height: 24),
-                  _buildProfileItem('NIM', _userData['nim']),
-                  _buildProfileItem('Nama', _userData['nama']),
-                  _buildProfileItem('Alamat', _userData['alamat']),
+                  _buildProfileItem('NIM', _profileData['nim']),
+                  _buildProfileItem('Nama', _profileData['nama']),
+                  _buildProfileItem('Alamat', _profileData['alamat']),
                   _buildProfileItem(
                     'Jenis Kelamin',
-                    _userData['jenis_kelamin'] == 'L'
+                    _profileData['jenis_kelamin'] == 'L'
                         ? 'Laki-laki'
                         : 'Perempuan',
                   ),
