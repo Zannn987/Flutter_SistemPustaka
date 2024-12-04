@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../config/api_config.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AnggotaService {
   Future<Map<String, dynamic>> login(String nim, String password) async {
@@ -17,7 +18,7 @@ class AnggotaService {
           'nim': nim,
           'password': password,
         },
-      ).timeout(Duration(seconds: 10));
+      ).timeout(const Duration(seconds: 10));
 
       print('Response status: ${response.statusCode}');
       print('Response body: ${response.body}');
@@ -36,16 +37,33 @@ class AnggotaService {
   // Get profile anggota
   Future<Map<String, dynamic>> getProfile(String nim) async {
     try {
+      // Simpan ID di SharedPreferences saat login
+      final prefs = await SharedPreferences.getInstance();
+      final id = prefs.getString('user_id'); // Pastikan menyimpan ID saat login
+
+      if (id == null) {
+        throw Exception('ID pengguna tidak ditemukan');
+      }
+
       final response = await http.get(
-        Uri.parse('${ApiConfig.profileUrl}?nim=$nim'),
+        Uri.parse('${ApiConfig.baseUrl}/anggota/profile.php?id=$id'),
       );
 
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
       if (response.statusCode == 200) {
-        return jsonDecode(response.body);
+        final decodedResponse = jsonDecode(response.body);
+        if (decodedResponse['status'] == 'success') {
+          return decodedResponse;
+        } else {
+          throw Exception(decodedResponse['message']);
+        }
       } else {
         throw Exception('Gagal mengambil data profile');
       }
     } catch (e) {
+      print('Error in getProfile: $e');
       throw Exception('Terjadi kesalahan: $e');
     }
   }
@@ -66,24 +84,38 @@ class AnggotaService {
   }
 
   // Tambah anggota baru
-  Future<Map<String, dynamic>> tambahAnggota(Map<String, dynamic> data) async {
+  Future<Map<String, dynamic>> tambahAnggota({
+    required String nim,
+    required String nama,
+    required String password,
+    required String alamat,
+    required String jenisKelamin,
+  }) async {
     try {
+      final Map<String, dynamic> data = {
+        'nim': nim,
+        'nama': nama,
+        'password': password,
+        'alamat': alamat,
+        'jenis_kelamin': jenisKelamin,
+      };
+
       final response = await http.post(
         Uri.parse(ApiConfig.tambahAnggotaUrl),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: jsonEncode(data),
+        body: data,
       );
 
-      if (response.statusCode == 201) {
-        return jsonDecode(response.body);
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        return json.decode(response.body);
       } else {
         throw Exception('Gagal menambah anggota');
       }
     } catch (e) {
-      throw Exception('Terjadi kesalahan: $e');
+      print('Error in tambahAnggota: $e');
+      return {'status': 'error', 'message': 'Terjadi kesalahan: $e'};
     }
   }
 
@@ -111,12 +143,16 @@ class AnggotaService {
         Uri.parse('${ApiConfig.baseUrl}/anggota/index.php'),
       );
 
+      print('Get Anggota Response: ${response.body}');
+
       if (response.statusCode == 200) {
-        return json.decode(response.body);
+        final decodedResponse = json.decode(response.body);
+        return decodedResponse;
       } else {
         throw Exception('Failed to load anggota');
       }
     } catch (e) {
+      print('Error in getAnggota: $e');
       throw Exception('Gagal memuat anggota: $e');
     }
   }

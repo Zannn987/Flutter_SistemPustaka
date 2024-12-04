@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import '../models/buku.dart';
 import '../services/buku_service.dart';
 import 'tambah_buku_screen.dart';
-import 'peminjaman_buku_screen.dart';
 
 class BukuScreen extends StatefulWidget {
-  const BukuScreen({Key? key}) : super(key: key);
+  const BukuScreen({super.key});
 
   @override
   _BukuScreenState createState() => _BukuScreenState();
@@ -43,26 +42,32 @@ class _BukuScreenState extends State<BukuScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Daftar Buku'),
-        backgroundColor: Color(0xFF1A237E),
+        title: const Text('Daftar Buku'),
+        backgroundColor: const Color(0xFF1A237E),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacementNamed(context, '/home');
+          },
+        ),
       ),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : bukuList.isEmpty
-              ? Center(child: Text('Tidak ada buku'))
+              ? const Center(child: Text('Tidak ada buku'))
               : ListView.builder(
                   itemCount: bukuList.length,
                   itemBuilder: (context, index) {
                     final buku = bukuList[index];
                     return Card(
-                      margin: EdgeInsets.symmetric(
+                      margin: const EdgeInsets.symmetric(
                         horizontal: 15,
                         vertical: 5,
                       ),
                       child: ListTile(
                         title: Text(
                           buku.judul,
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,15 +79,6 @@ class _BukuScreenState extends State<BukuScreen> {
                             Text('Kategori: ${buku.kategori}'),
                           ],
                         ),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  PeminjamanBukuScreen(buku: buku),
-                            ),
-                          );
-                        },
                       ),
                     );
                   },
@@ -97,8 +93,8 @@ class _BukuScreenState extends State<BukuScreen> {
             _loadBuku(); // Refresh data setelah menambah buku
           }
         },
+        backgroundColor: const Color(0xFF00BFA5),
         child: Icon(Icons.add),
-        backgroundColor: Color(0xFF00BFA5),
       ),
     );
   }

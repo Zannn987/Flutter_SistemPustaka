@@ -31,6 +31,8 @@ class ApiConfig {
 
   // Endpoint untuk pengembalian
   static String get pengembalianUrl => '$baseUrl/pengembalian/create.php';
+  static String get hapusPengembalianUrl =>
+      '$baseUrl/pengembalian/hapus-pengembalian.php';
   static String get historyPengembalianUrl =>
       '$baseUrl/pengembalian/history.php';
 }

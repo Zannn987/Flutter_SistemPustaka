@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
-import '../services/anggota_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../services/anggota_service.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _nimController = TextEditingController();
+  final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _anggotaService = AnggotaService();
+  bool _isPasswordVisible = false;
   bool _isLoading = false;
 
   Future<void> _login() async {
@@ -21,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       final response = await _anggotaService.login(
-        _nimController.text,
+        _usernameController.text,
         _passwordController.text,
       );
 
@@ -29,11 +32,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (response['status'] == 'success') {
         // Debug print
-        print('Saving NIM: ${_nimController.text}');
+        print('Saving NIM: ${_usernameController.text}');
 
         // Simpan NIM ke SharedPreferences
         final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('nim', _nimController.text);
+        await prefs.setString('nim', _usernameController.text);
+        await prefs.setString('user_id', response['data']['id'].toString());
 
         Navigator.pushReplacementNamed(context, '/home');
       } else {
@@ -57,21 +61,21 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(20.0),
             child: Form(
               key: _formKey,
               child: Column(
                 children: [
-                  SizedBox(height: 50),
+                  const SizedBox(height: 50),
                   // Logo buku
                   Image.asset(
                     'assets/buku.png', // Pastikan ada di pubspec.yaml
                     width: 150,
                     height: 150,
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   // Judul Sistem
-                  Text(
+                  const Text(
                     'SISTEM\nINFORMASI\nPERPUSTAKAAN',
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -81,10 +85,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 1.2,
                     ),
                   ),
-                  SizedBox(height: 50),
+                  const SizedBox(height: 50),
                   // Form Login
                   TextFormField(
-                    controller: _nimController,
+                    controller: _usernameController,
                     decoration: InputDecoration(
                       hintText: 'Username/Nim',
                       filled: true,
@@ -105,10 +109,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       return null;
                     },
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TextFormField(
                     controller: _passwordController,
-                    obscureText: true,
+                    obscureText: !_isPasswordVisible,
                     decoration: InputDecoration(
                       hintText: 'Password',
                       filled: true,
@@ -121,6 +125,18 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderRadius: BorderRadius.circular(10),
                         borderSide: BorderSide(color: Colors.grey.shade300),
                       ),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isPasswordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isPasswordVisible = !_isPasswordVisible;
+                          });
+                        },
+                      ),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -129,12 +145,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       return null;
                     },
                   ),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   SizedBox(
                     width: double.infinity,
                     height: 50,
                     child: ElevatedButton(
                       onPressed: _isLoading ? null : _login,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF00BFA5), // Warna hijau
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
                       child: _isLoading
                           ? CircularProgressIndicator(color: Colors.white)
                           : Text(
@@ -144,12 +166,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF00BFA5), // Warna hijau
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
                     ),
                   ),
                 ],
@@ -163,7 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
-    _nimController.dispose();
+    _usernameController.dispose();
     _passwordController.dispose();
     super.dispose();
   }

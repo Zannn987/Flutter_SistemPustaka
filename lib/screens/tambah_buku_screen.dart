@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../services/buku_service.dart';
 
 class TambahBukuScreen extends StatefulWidget {
+  const TambahBukuScreen({super.key});
+
   @override
   _TambahBukuScreenState createState() => _TambahBukuScreenState();
 }
@@ -22,18 +24,18 @@ class _TambahBukuScreenState extends State<TambahBukuScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tambah Buku'),
-        backgroundColor: Color(0xFF1A237E),
+        title: const Text('Tambah Buku'),
+        backgroundColor: const Color(0xFF1A237E),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Form(
           key: _formKey,
           child: Column(
             children: [
               TextFormField(
                 controller: _judulController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Judul Buku',
                   border: OutlineInputBorder(),
                 ),
@@ -44,10 +46,10 @@ class _TambahBukuScreenState extends State<TambahBukuScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _pengarangController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Pengarang',
                   border: OutlineInputBorder(),
                 ),
@@ -58,10 +60,10 @@ class _TambahBukuScreenState extends State<TambahBukuScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _penerbitController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Penerbit',
                   border: OutlineInputBorder(),
                 ),
@@ -72,10 +74,10 @@ class _TambahBukuScreenState extends State<TambahBukuScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _tahunController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Tahun Terbit',
                   border: OutlineInputBorder(),
                 ),
@@ -87,10 +89,10 @@ class _TambahBukuScreenState extends State<TambahBukuScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _stokController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Stok',
                   border: OutlineInputBorder(),
                 ),
@@ -102,10 +104,10 @@ class _TambahBukuScreenState extends State<TambahBukuScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _kategoriController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Kategori',
                   border: OutlineInputBorder(),
                 ),
@@ -116,18 +118,18 @@ class _TambahBukuScreenState extends State<TambahBukuScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
               SizedBox(
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
                   onPressed: _isLoading ? null : _saveBuku,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF00BFA5),
+                    backgroundColor: const Color(0xFF00BFA5),
                   ),
                   child: _isLoading
-                      ? CircularProgressIndicator(color: Colors.white)
-                      : Text('SIMPAN'),
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : const Text('SIMPAN'),
                 ),
               ),
             ],
@@ -155,9 +157,9 @@ class _TambahBukuScreenState extends State<TambahBukuScreen> {
 
         if (response['status'] == 'success') {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Buku berhasil ditambahkan')),
+            const SnackBar(content: Text('Buku berhasil ditambahkan')),
           );
-          Navigator.pop(context, true);
+          Navigator.pushReplacementNamed(context, '/home');
         } else {
           throw Exception(response['message']);
         }

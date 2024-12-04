@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class BottomNavigation extends StatelessWidget {
+class CustomBottomNavigation extends StatelessWidget {
   final int currentIndex;
 
-  const BottomNavigation({
-    Key? key,
-    required this.currentIndex,
-  }) : super(key: key);
+  const CustomBottomNavigation({super.key, required this.currentIndex});
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       currentIndex: currentIndex,
       type: BottomNavigationBarType.fixed,
-      backgroundColor: Color(0xFF2C3E50),
-      selectedItemColor: Color(0xFF00BFA5),
-      unselectedItemColor: Colors.grey,
-      items: [
+      backgroundColor: const Color(0xFF1A237E),
+      selectedItemColor: Colors.white,
+      unselectedItemColor: Colors.white70,
+      items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Home',
+        ),
         BottomNavigationBarItem(
           icon: Icon(Icons.book),
           label: 'Buku',
@@ -27,38 +27,30 @@ class BottomNavigation extends StatelessWidget {
           label: 'Anggota',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.library_books),
+          icon: Icon(Icons.bookmark),
           label: 'Peminjaman',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
           label: 'Profile',
         ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.logout),
-          label: 'Logout',
-        ),
       ],
       onTap: (index) {
         switch (index) {
           case 0:
-            Navigator.pushReplacementNamed(context, '/buku');
+            Navigator.pushReplacementNamed(context, '/home');
             break;
           case 1:
-            Navigator.pushReplacementNamed(context, '/anggota');
+            Navigator.pushReplacementNamed(context, '/buku');
             break;
           case 2:
-            Navigator.pushReplacementNamed(context, '/peminjaman');
+            Navigator.pushReplacementNamed(context, '/anggota');
             break;
           case 3:
-            Navigator.pushReplacementNamed(context, '/profile');
+            Navigator.pushReplacementNamed(context, '/peminjaman');
             break;
           case 4:
-            // Handle logout
-            SharedPreferences.getInstance().then((prefs) {
-              prefs.clear();
-              Navigator.pushReplacementNamed(context, '/');
-            });
+            Navigator.pushReplacementNamed(context, '/profile');
             break;
         }
       },

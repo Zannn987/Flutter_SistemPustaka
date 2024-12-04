@@ -5,12 +5,15 @@ import 'screens/buku_screen.dart';
 import 'screens/peminjaman_list_screen.dart';
 import 'screens/profile_screen.dart';
 import 'screens/anggota_screen.dart';
+import 'screens/peminjaman_buku_screen.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -18,13 +21,24 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/',
+      initialRoute: '/login',
       routes: {
-        '/': (context) => LoginScreen(),
+        '/login': (context) => LoginScreen(),
         '/home': (context) => HomeScreen(),
-        '/buku': (context) => BukuScreen(),
-        '/peminjaman': (context) => PeminjamanListScreen(),
-        '/profile': (context) => ProfileScreen(),
+        '/buku': (context) => const BukuScreen(),
+        '/anggota': (context) => AnggotaScreen(),
+        '/peminjaman': (context) => const PeminjamanListScreen(),
+        '/profile': (context) => const ProfileScreen(),
+      },
+      onGenerateRoute: (settings) {
+        if (settings.name == '/peminjaman-buku') {
+          final Map<String, dynamic> args =
+              settings.arguments as Map<String, dynamic>;
+          return MaterialPageRoute(
+            builder: (context) => PeminjamanBukuScreen(buku: args),
+          );
+        }
+        return null;
       },
     );
   }

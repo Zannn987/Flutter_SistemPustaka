@@ -111,8 +111,10 @@ class PeminjamanService {
 
   Future<Map<String, dynamic>> kembalikanBuku(String peminjamanId) async {
     try {
+      print('Mengirim request ke server dengan ID: $peminjamanId');
+
       final response = await http.post(
-        Uri.parse(ApiConfig.kembalikanBukuUrl),
+        Uri.parse('${ApiConfig.baseUrl}/peminjaman/kembalikan-buku.php'),
         body: {
           'id': peminjamanId,
         },
@@ -123,16 +125,13 @@ class PeminjamanService {
 
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
-        if (jsonResponse['status'] == 'error') {
-          throw Exception(jsonResponse['message']);
-        }
         return jsonResponse;
       } else {
-        throw Exception('Failed to return book');
+        throw Exception('Failed to return book: ${response.statusCode}');
       }
     } catch (e) {
       print('Error in kembalikanBuku: $e');
-      throw Exception('Gagal mengembalikan buku: $e');
+      rethrow;
     }
   }
 }
