@@ -28,10 +28,9 @@ class _LoginScreenState extends State<LoginScreen> {
         _passwordController.text,
       );
 
-      print('Response from server: $response'); // Untuk debugging
+      print('Response from server: $response');
 
       if (response['status'] == 'success') {
-        // Debug print
         print('Saving NIM: ${_usernameController.text}');
 
         // Simpan NIM ke SharedPreferences
@@ -69,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 50),
                   // Logo buku
                   Image.asset(
-                    'assets/buku.png', // Pastikan ada di pubspec.yaml
+                    'assets/buku.png',
                     width: 150,
                     height: 150,
                   ),
@@ -81,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF1A237E), // Warna biru tua
+                      color: Color(0xFF1A237E),
                       height: 1.2,
                     ),
                   ),
@@ -152,14 +151,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: ElevatedButton(
                       onPressed: _isLoading ? null : _login,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF00BFA5), // Warna hijau
+                        backgroundColor: const Color(0xFF00BFA5),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                       child: _isLoading
-                          ? CircularProgressIndicator(color: Colors.white)
-                          : Text(
+                          ? const CircularProgressIndicator(color: Colors.white)
+                          : const Text(
                               'LOGIN',
                               style: TextStyle(
                                 fontSize: 16,

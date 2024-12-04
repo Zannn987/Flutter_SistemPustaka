@@ -6,7 +6,7 @@ class Pengembalian {
   final int terlambat;
   final double denda;
   final String peminjamanId;
-  final Peminjaman? peminjaman; // Relasi ke model Peminjaman
+  final Peminjaman? peminjaman;
 
   Pengembalian({
     required this.id,

@@ -8,7 +8,7 @@ import 'screens/anggota_screen.dart';
 import 'screens/peminjaman_buku_screen.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -23,10 +23,10 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/login',
       routes: {
-        '/login': (context) => LoginScreen(),
+        '/login': (context) => const LoginScreen(),
         '/home': (context) => HomeScreen(),
         '/buku': (context) => const BukuScreen(),
-        '/anggota': (context) => AnggotaScreen(),
+        '/anggota': (context) => const AnggotaScreen(),
         '/peminjaman': (context) => const PeminjamanListScreen(),
         '/profile': (context) => const ProfileScreen(),
       },

@@ -5,7 +5,6 @@ import '../config/api_config.dart';
 class PeminjamanService {
   static const String baseUrl = '${ApiConfig.baseUrl}/peminjaman';
 
-  // Buat peminjaman baru
   Future<Map<String, dynamic>> createPeminjaman(
     String nimAnggota,
     String idBuku,
@@ -33,7 +32,6 @@ class PeminjamanService {
     }
   }
 
-  // Get peminjaman by NIM
   Future<List<Map<String, dynamic>>> getPeminjamanByNim(String nim) async {
     try {
       final response = await http.get(
@@ -51,7 +49,6 @@ class PeminjamanService {
     }
   }
 
-  // Get detail peminjaman
   Future<Map<String, dynamic>> getDetailPeminjaman(String id) async {
     try {
       final response = await http.get(Uri.parse('$baseUrl/$id'));
@@ -69,7 +66,7 @@ class PeminjamanService {
   Future<Map<String, dynamic>> savePeminjaman(
       Map<String, dynamic> peminjamanData) async {
     try {
-      print('Sending data: $peminjamanData'); // Debug print
+      print('Sending data: $peminjamanData');
 
       final response = await http.post(
         Uri.parse('${ApiConfig.baseUrl}/peminjaman/tambah-peminjaman.php'),

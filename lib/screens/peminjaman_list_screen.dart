@@ -88,10 +88,10 @@ class _PeminjamanListScreenState extends State<PeminjamanListScreen> {
       final tanggalKembaliDate = DateTime.parse(tanggalKembali);
       final today = DateTime.now();
       if (today.isAfter(tanggalKembaliDate)) {
-        return Colors.red; // Terlambat
+        return Colors.red;
       }
     }
-    return Colors.orange; // Masih dipinjam
+    return Colors.orange;
   }
 
   void _handlePengembalian(Map<String, dynamic> peminjaman) {
@@ -177,7 +177,7 @@ class _PeminjamanListScreenState extends State<PeminjamanListScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pushReplacementNamed(context, '/home'); // Kembali ke home
+            Navigator.pushReplacementNamed(context, '/home');
           },
         ),
       ),

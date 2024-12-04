@@ -5,7 +5,6 @@ import '../config/api_config.dart';
 class PengembalianService {
   static const String baseUrl = '${ApiConfig.baseUrl}/pengembalian';
 
-  // Proses pengembalian buku
   Future<Map<String, dynamic>> prosespengembalian(
     String idPeminjaman,
     String tanggalDikembalikan,
@@ -29,7 +28,6 @@ class PengembalianService {
     }
   }
 
-  // Get history pengembalian by NIM
   Future<List<Map<String, dynamic>>> getHistoryPengembalian(String nim) async {
     try {
       final response = await http.get(
@@ -47,7 +45,6 @@ class PengembalianService {
     }
   }
 
-  // Hitung denda
   Future<Map<String, dynamic>> hitungDenda(
     String idPeminjaman,
     String tanggalDikembalikan,

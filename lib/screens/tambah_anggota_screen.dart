@@ -88,7 +88,6 @@ class _TambahAnggotaScreenState extends State<TambahAnggotaScreen> {
             ElevatedButton(
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
-                  // Kirim data ke API
                   final response = await AnggotaService().tambahAnggota(
                     nim: _nimController.text,
                     nama: _namaController.text,

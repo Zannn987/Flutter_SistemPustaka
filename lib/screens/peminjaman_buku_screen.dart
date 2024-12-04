@@ -54,7 +54,7 @@ class _PeminjamanBukuScreenState extends State<PeminjamanBukuScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Buku berhasil dipinjam')),
           );
-          // Kembali ke halaman sebelumnya dan refresh daftar peminjaman
+
           Navigator.pop(context, true);
         } else {
           throw Exception(response['message']);

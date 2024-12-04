@@ -5,8 +5,7 @@ import '../config/api_config.dart';
 class BukuService {
   Future<Map<String, dynamic>> getBuku() async {
     try {
-      print(
-          'Fetching books from: ${ApiConfig.baseUrl}/buku/get-buku.php'); // Debug URL
+      print('Fetching books from: ${ApiConfig.baseUrl}/buku/get-buku.php');
 
       final response = await http.get(
         Uri.parse('${ApiConfig.baseUrl}/buku/get-buku.php'),
@@ -15,8 +14,8 @@ class BukuService {
         },
       ).timeout(const Duration(seconds: 10));
 
-      print('Response status: ${response.statusCode}'); // Debug response
-      print('Response body: ${response.body}'); // Debug response body
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
 
       if (response.statusCode == 200) {
         final decodedData = json.decode(response.body);
@@ -26,7 +25,7 @@ class BukuService {
       }
     } catch (e) {
       print('Error in getBuku: $e'); // Debug error
-      rethrow; // Lempar error untuk ditangani di UI
+      rethrow;
     }
   }
 
@@ -43,8 +42,8 @@ class BukuService {
         body: bukuData,
       );
 
-      print('Response status: ${response.statusCode}'); // Debugging
-      print('Response body: ${response.body}'); // Debugging
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
 
       if (response.statusCode == 200) {
         return json.decode(response.body);
@@ -52,7 +51,7 @@ class BukuService {
         throw Exception('Gagal menyimpan buku: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error saving book: $e'); // Debugging
+      print('Error saving book: $e');
       throw Exception('Gagal menyimpan buku: $e');
     }
   }

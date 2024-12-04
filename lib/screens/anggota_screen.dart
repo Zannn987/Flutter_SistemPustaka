@@ -68,7 +68,7 @@ class _AnggotaScreenState extends State<AnggotaScreen> {
           Navigator.pushNamed(context, '/tambah-anggota');
         },
         backgroundColor: const Color(0xFF00BFA5),
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
       bottomNavigationBar: const CustomBottomNavigation(currentIndex: 2),
     );

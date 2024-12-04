@@ -87,14 +87,14 @@ class _BukuScreenState extends State<BukuScreen> {
         onPressed: () async {
           final result = await Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => TambahBukuScreen()),
+            MaterialPageRoute(builder: (context) => const TambahBukuScreen()),
           );
           if (result == true) {
             _loadBuku(); // Refresh data setelah menambah buku
           }
         },
         backgroundColor: const Color(0xFF00BFA5),
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

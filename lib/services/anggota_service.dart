@@ -39,7 +39,7 @@ class AnggotaService {
     try {
       // Simpan ID di SharedPreferences saat login
       final prefs = await SharedPreferences.getInstance();
-      final id = prefs.getString('user_id'); // Pastikan menyimpan ID saat login
+      final id = prefs.getString('user_id');
 
       if (id == null) {
         throw Exception('ID pengguna tidak ditemukan');

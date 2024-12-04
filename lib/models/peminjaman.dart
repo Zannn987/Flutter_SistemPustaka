@@ -7,8 +7,8 @@ class Peminjaman {
   final String tanggalKembali;
   final String anggotaId;
   final String bukuId;
-  final Anggota? anggota; // Relasi ke model Anggota
-  final Buku? buku; // Relasi ke model Buku
+  final Anggota? anggota;
+  final Buku? buku;
 
   Peminjaman({
     required this.id,

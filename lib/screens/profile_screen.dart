@@ -86,7 +86,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       backgroundColor: Colors.blue[900],
                       minimumSize: const Size(double.infinity, 50),
                     ),
-                    child: Text('Ubah Password'),
+                    child: const Text('Ubah Password'),
                   ),
                 ],
               ),
