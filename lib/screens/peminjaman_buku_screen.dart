@@ -69,6 +69,18 @@ class _PeminjamanBukuScreenState extends State<PeminjamanBukuScreen> {
     }
   }
 
+  Future<void> _selectDate(TextEditingController controller) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null && picked != DateTime.now()) {
+      controller.text = picked.toString().split(' ')[0];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,7 +110,7 @@ class _PeminjamanBukuScreenState extends State<PeminjamanBukuScreen> {
                       labelText: 'Tanggal Pinjam',
                       border: OutlineInputBorder(),
                     ),
-                    readOnly: true,
+                    onTap: () => _selectDate(_tanggalPinjamController),
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
@@ -107,7 +119,7 @@ class _PeminjamanBukuScreenState extends State<PeminjamanBukuScreen> {
                       labelText: 'Tanggal Kembali',
                       border: OutlineInputBorder(),
                     ),
-                    readOnly: true,
+                    onTap: () => _selectDate(_tanggalKembaliController),
                   ),
                   const SizedBox(height: 24),
                   SizedBox(

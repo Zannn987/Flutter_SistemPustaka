@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/buku.dart';
 import '../services/buku_service.dart';
 import 'tambah_buku_screen.dart';
+import '../widgets/bottom_navigation.dart';
 
 class BukuScreen extends StatefulWidget {
   const BukuScreen({super.key});
@@ -96,6 +97,7 @@ class _BukuScreenState extends State<BukuScreen> {
         backgroundColor: const Color(0xFF00BFA5),
         child: const Icon(Icons.add),
       ),
+      bottomNavigationBar: const CustomBottomNavigation(currentIndex: 1),
     );
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/anggota_service.dart';
+import '../widgets/bottom_navigation.dart';
+import 'edit_profile_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -47,7 +49,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: const Text(
+          'Profile',
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: Colors.blue[900],
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -79,18 +84,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   const SizedBox(height: 24),
                   ElevatedButton(
-                    onPressed: () {
-                      // Implementasi ubah password
+                    onPressed: () async {
+                      print('Tombol Edit Profil diklik');
+                      final updatedProfile = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EditProfileScreen(
+                            profileData: _profileData,
+                          ),
+                        ),
+                      );
+
+                      if (updatedProfile != null) {
+                        setState(() {
+                          _profileData = updatedProfile;
+                        });
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue[900],
                       minimumSize: const Size(double.infinity, 50),
                     ),
-                    child: const Text('Ubah Password'),
+                    child: const Text(
+                      'Edit Profil',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
+      bottomNavigationBar: const CustomBottomNavigation(currentIndex: 4),
     );
   }
 

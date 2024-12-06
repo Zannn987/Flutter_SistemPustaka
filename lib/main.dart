@@ -6,6 +6,7 @@ import 'screens/peminjaman_list_screen.dart';
 import 'screens/profile_screen.dart';
 import 'screens/anggota_screen.dart';
 import 'screens/peminjaman_buku_screen.dart';
+import 'screens/edit_profile_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -29,6 +30,9 @@ class MyApp extends StatelessWidget {
         '/anggota': (context) => const AnggotaScreen(),
         '/peminjaman': (context) => const PeminjamanListScreen(),
         '/profile': (context) => const ProfileScreen(),
+        '/edit-profile': (context) => EditProfileScreen(
+              profileData: {},
+            ),
       },
       onGenerateRoute: (settings) {
         if (settings.name == '/peminjaman-buku') {
