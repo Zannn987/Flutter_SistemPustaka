@@ -6,7 +6,7 @@ include_once '../config/database.php';
 
 try {
 
-    if (empty($_POST['nim']) || empty($_POST['password']) || empty($_POST['nama']) || empty($_POST['jenis_kelamin'])) {
+    if (empty($_POST['nim']) || empty($_POST['password']) || empty($_POST['nama']) || empty($_POST['alamat']) || empty($_POST['jenis_kelamin'])) {
         throw new Exception('Semua field wajib diisi');
     }
 
