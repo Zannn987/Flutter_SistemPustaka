@@ -12,11 +12,11 @@ try {
         throw new Exception('Semua field wajib diisi');
     }
 
-    $nim = $_POST['nim'];
-    $password = $_POST['password'];
-    $nama = $_POST['nama'];
-    $alamat = $_POST['alamat'] ?? '';
-    $jenis_kelamin = $_POST['jenis_kelamin'];
+    $nim = $data['nim'];
+    $password = $data['password'];
+    $nama = $data['nama'];
+    $alamat = $data['alamat'] ?? '';
+    $jenis_kelamin = $data['jenis_kelamin'];
 
 
     $check_query = "SELECT id FROM anggota WHERE nim = ?";

@@ -1,52 +1,57 @@
 <?php
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST");
-header("Access-Control-Allow-Headers: Content-Type, Accept");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
+header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json; charset=UTF-8");
 
-require_once "../config/database.php";
+include_once '../config/database.php';
 
 try {
+    // Mengambil data JSON dari body permintaan
+    $data = json_decode(file_get_contents("php://input"), true);
 
-    $judul = $_POST['judul'] ?? '';
-    $pengarang = $_POST['pengarang'] ?? '';
-    $penerbit = $_POST['penerbit'] ?? '';
-    $tahun_terbit = $_POST['tahun_terbit'] ?? '';
-    $stok = $_POST['stok'] ?? '';
-
-
-    if (empty($judul) || empty($pengarang) || empty($penerbit) || empty($tahun_terbit) || empty($stok)) {
-        throw new Exception("Semua field harus diisi");
+    // Memeriksa apakah semua field yang diperlukan terisi
+    if (empty($data['judul']) || empty($data['pengarang']) || empty($data['penerbit']) || empty($data['tahun_terbit']) || empty($data['stok']) || empty($data['kategori'])) {
+        throw new Exception('Semua field wajib diisi');
     }
 
+    // Mengambil data dari array $data
+    $judul = $data['judul'];
+    $pengarang = $data['pengarang'];
+    $penerbit = $data['penerbit'];
+    $tahun_terbit = $data['tahun_terbit'];
+    $stok = $data['stok'];
+    $kategori = $data['kategori'];
 
-    $query = "INSERT INTO buku (judul, pengarang, penerbit, tahun_terbit, stok) 
-              VALUES (?, ?, ?, ?, ?)";
+    // Melanjutkan dengan logika database
+    $query = "INSERT INTO buku (judul, pengarang, penerbit, tahun_terbit, stok, kategori) VALUES (?, ?, ?, ?, ?, ?)";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "ssssss", $judul, $pengarang, $penerbit, $tahun_terbit, $stok, $kategori);
 
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("sssss", $judul, $pengarang, $penerbit, $tahun_terbit, $stok);
-
-    if ($stmt->execute()) {
+    if (mysqli_stmt_execute($stmt)) {
+        $id = mysqli_insert_id($conn);
         echo json_encode([
             'status' => 'success',
             'message' => 'Buku berhasil ditambahkan',
             'data' => [
-                'id' => $conn->insert_id,
+                'id' => $id,
                 'judul' => $judul,
                 'pengarang' => $pengarang,
                 'penerbit' => $penerbit,
                 'tahun_terbit' => $tahun_terbit,
-                'stok' => $stok
+                'stok' => $stok,
+                'kategori' => $kategori
             ]
         ]);
     } else {
-        throw new Exception("Gagal menambahkan buku");
+        throw new Exception(mysqli_error($conn));
     }
 } catch (Exception $e) {
+    http_response_code(400);
     echo json_encode([
         'status' => 'error',
-        'message' => 'Gagal menambahkan buku: ' . $e->getMessage()
+        'message' => $e->getMessage()
     ]);
 }
 
-$conn->close();
+mysqli_close($conn);
