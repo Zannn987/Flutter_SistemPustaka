@@ -10,6 +10,9 @@ try {
     // Mengambil data JSON dari body permintaan
     $data = json_decode(file_get_contents("php://input"), true);
 
+    // Tambahkan debugging untuk melihat data yang diterima
+    error_log(print_r($data, true)); // Menyimpan data yang diterima ke log
+
     // Memeriksa apakah semua field yang diperlukan terisi
     if (empty($data['judul']) || empty($data['pengarang']) || empty($data['penerbit']) || empty($data['tahun_terbit']) || empty($data['stok']) || empty($data['kategori'])) {
         throw new Exception('Semua field wajib diisi');
