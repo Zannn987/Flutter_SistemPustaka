@@ -1,12 +1,14 @@
 <?php
-header('Access-Control-Allow-Origin: *');
-header('Content-Type: application/json');
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
+header("Access-Control-Allow-Headers: Content-Type");
+header("Content-Type: application/json; charset=UTF-8");
 
 include_once '../config/database.php';
 
 try {
-
-    if (empty($_POST['nim']) || empty($_POST['password']) || empty($_POST['nama']) || empty($_POST['alamat']) || empty($_POST['jenis_kelamin'])) {
+    $data = json_decode(file_get_contents("php://input"), true);
+    if (empty($data['nim']) || empty($data['password']) || empty($data['nama']) || empty($data['alamat']) || empty($data['jenis_kelamin'])) {
         throw new Exception('Semua field wajib diisi');
     }
 
