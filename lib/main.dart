@@ -7,6 +7,7 @@ import 'screens/profile_screen.dart';
 import 'screens/anggota_screen.dart';
 import 'screens/peminjaman_buku_screen.dart';
 import 'screens/edit_profile_screen.dart';
+import 'screens/tambah_anggota_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => HomeScreen(),
         '/buku': (context) => const BukuScreen(),
         '/anggota': (context) => const AnggotaScreen(),
+        '/tambah-anggota': (context) => const TambahAnggotaScreen(),
         '/peminjaman': (context) => const PeminjamanListScreen(),
         '/profile': (context) => const ProfileScreen(),
         '/edit-profile': (context) => EditProfileScreen(
